@@ -6,7 +6,7 @@ LOCATION '/neuro/output/passes/'
 ;
 
 -- Add jar for custom Group Concat UDAF
-add jar /neuro/lib/NeuroHive.jar;
+add jar /neuro/neurosrc/lib/NeuroHive.jar;
 
 -- Create temporary Hive UDF Neuro Group Concat (ngc)
 create temporary function ngc as 'convolution.hive.udaf.NGroupConcat';

@@ -1,0 +1,34 @@
+#Preconfigured Directory structure:
+/neuro
+/neuro/data/
+/neuro/data/passes/ #all passes files
+/neuro/data/phase/ #all phase files
+/neuro/data/signals/ #all signal files in csv format
+
+#Assuming logged in user has read, write and execute permissions to /neuro/
+#Git clone all source and libraries in /neuro/
+cd /neuro/
+git clone https://sing0794@github.com/sing0794/neurosrc.git
+
+#Set Hadoop and Hive Home in /etc/profile
+export HADOOP_HOME=/usr/lib/hadoop-0.20
+export HIVE_HOME=/usr/lib/hive
+
+#Build Neuro Hadoop jar
+cd /neuro/neurosrc/src/NeuroHadoop
+ant
+cp /neuro/neurosrc/src/NeuroHadoop/dist/NeuroHadoop.jar /neuro/neurosrc/lib/NeuroHadoop.jar
+
+#Build Neuro Hive jar
+cd /neuro/neurosrc/src/NeuroHive
+ant
+cp /neuro/neurosrc/src/NeuroHive/dist/NeuroHive.jar /neuro/neurosrc/lib/NeuroHive.jar
+
+
+#Execute permissions
+chmod a+x /neuro/neurosrc/script/shell/*
+
+#Run the job
+nohup /neuro/neurosrc/script/shell/nh.sh&
+
+
