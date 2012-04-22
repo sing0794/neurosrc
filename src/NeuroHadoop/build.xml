@@ -9,7 +9,12 @@
 	<property name="dist"  location="dist"/>
 	<property environment="env"/>
 
-	<target name="init">
+	<target name="clean" description="clean up" >
+		<delete dir="${build}"/>
+		<delete dir="${dist}"/>
+	</target>
+
+	<target name="init" depends="clean">
 		<tstamp/>
 		<mkdir dir="${build}"/>
 	</target>
@@ -33,9 +38,4 @@
 		<jar jarfile="${dist}/${name}.jar" basedir="${build}"/>
 	</target>
 	
-	<target name="clean" description="clean up" >
-		<delete dir="${build}"/>
-		<delete dir="${dist}"/>
-	</target>
-
 </project>
