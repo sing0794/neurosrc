@@ -33,7 +33,7 @@ cd /neuro
 mkdir tmp
 
 #Run the job
-cd tmp
+cd /neuro/tmp
 nohup /neuro/neurosrc/script/shell/nh.sh&
 
 
