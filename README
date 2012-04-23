@@ -28,7 +28,12 @@ cp /neuro/neurosrc/src/NeuroHive/dist/NeuroHive.jar /neuro/neurosrc/lib/NeuroHiv
 #Execute permissions
 chmod a+x /neuro/neurosrc/script/shell/*
 
+#Create tmp directory for job execution
+cd neuro
+mkdir tmp
+
 #Run the job
+cd tmp
 nohup /neuro/neurosrc/script/shell/nh.sh&
 
 

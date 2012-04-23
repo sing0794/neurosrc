@@ -27,7 +27,7 @@ import org.apache.hadoop.mapred.Reporter;
 public class ConvolutionMapper extends MapReduceBase implements
 		Mapper<LongWritable, Text, NullWritable, Text> {
 
-	public static final String HDFS_KERNEL = "lookup/morlet-2000.dat";
+	public static final String HDFS_KERNEL = "/neuro/lookup/morlet-2000.dat";
 	public static final int SIGNAL_BUFFER_SIZE = 10000000;
 	public static final int KERNEL_START_FREQ = 5;
 	public static final int KERNEL_END_FREQ = 200;
@@ -78,8 +78,8 @@ public class ConvolutionMapper extends MapReduceBase implements
 		String fpath = conf.get("map.input.file");
 		String fname = new File(fpath).getName();
 
-		BufferedWriter alterout = new BufferedWriter(new FileWriter("/neuro/script/hive/alterrats.q", true));		
-		BufferedWriter insertout = new BufferedWriter(new FileWriter("/neuro/script/hive/insertratsaverage.q", true));		
+		BufferedWriter alterout = new BufferedWriter(new FileWriter("/neuro/neurosrc/script/hive/alterrats.q", true));		
+		BufferedWriter insertout = new BufferedWriter(new FileWriter("/neuro/neurosrc/script/hive/insertratsaverage.q", true));		
 		
 		String ratnumber;
 		String sessiondate;

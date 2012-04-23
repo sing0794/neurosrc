@@ -74,7 +74,7 @@ public class ConvolutionJob extends Configured implements Tool {
 	}
 
 	public void CreateRats(JobConf conf) throws IOException {
-		BufferedWriter out = new BufferedWriter(new FileWriter("/neuro/script/hive/createrats.q"));		
+		BufferedWriter out = new BufferedWriter(new FileWriter("/neuro/neurosrc/script/hive/createrats.q"));		
 				
 		out.write("DROP TABLE rats;");
 		out.newLine();
