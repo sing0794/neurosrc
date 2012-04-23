@@ -3,9 +3,9 @@
 hadoop fs -rmr /neuro/output
 hadoop fs -rmr /neuro/input
 hadoop fs -rmr /neuro/lookup
-hadoop fs -rmr /neuro/neurosrc/script/hive/createrats.q
-hadoop fs -rmr /neuro/neurosrc/script/hive/alterrats.q
-hadoop fs -rmr /neuro/neurosrc/script/hive/insertratsaverage.q
+rm /neuro/neurosrc/script/hive/createrats.q
+rm /neuro/neurosrc/script/hive/alterrats.q
+rm /neuro/neurosrc/script/hive/insertratsaverage.q
 
 hadoop fs -mkdir /neuro/input
 hadoop fs -mkdir /neuro/lookup
