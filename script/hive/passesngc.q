@@ -18,6 +18,6 @@ SELECT concat(
 	CREATE TABLE ratssubset 
 	LOCATION '/neuro/output/ratssubset' 
 	AS 
-	SELECT * FROM rats WHERE ", ngc(concat("((time >= ", mintime, ") AND (time <= ", maxtime, ")) OR ")), "FALSE\;"
+	SELECT * FROM ratsaverage WHERE ", ngc(concat("((time >= ", mintime, ") AND (time <= ", maxtime, ")) OR ")), "FALSE\;"
 	)
 FROM passes;
