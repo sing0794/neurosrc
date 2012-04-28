@@ -1,6 +1,7 @@
 #!/bin/bash
 START=$(date +%s)
 
+#Clean hdfs
 hadoop fs -rmr /neuro/output
 hadoop fs -rmr /neuro/input
 hadoop fs -rmr /neuro/lookup
@@ -8,16 +9,40 @@ rm /neuro/neurosrc/script/hive/createrats.q
 rm /neuro/neurosrc/script/hive/alterrats.q
 rm /neuro/neurosrc/script/hive/insertratsaverage.q
 
+#Hdfs folders
 hadoop fs -mkdir /neuro/input
 hadoop fs -mkdir /neuro/lookup
 hadoop fs -mkdir /neuro/output/passes
 hadoop fs -mkdir /neuro/output/phase
 
+#Put data files into hdfs
 hadoop fs -put /neuro/data/morlet-2000.csv /neuro/lookup/morlet-2000.dat
 hadoop fs -put /neuro/data/signals/*.csv /neuro/input/
 hadoop fs -put /neuro/data/passes/*.csv /neuro/output/passes/
 hadoop fs -put /neuro/data/phase/*.csv /neuro/output/phase/
 
+#Build Neuro Hadoop jar
+cd /neuro/neurosrc/src/NeuroHadoop
+ant
+cp /neuro/neurosrc/src/NeuroHadoop/dist/NeuroHadoop.jar /neuro/neurosrc/lib/NeuroHadoop.jar
+ant clean
+
+#Build Neuro Hive jar
+cd /neuro/neurosrc/src/NeuroHive
+ant
+cp /neuro/neurosrc/src/NeuroHive/dist/NeuroHive.jar /neuro/neurosrc/lib/NeuroHive.jar
+ant clean
+
+#Execute permissions
+chmod a+x /neuro/neurosrc/script/shell/*
+
+#Create tmp directory for job execution
+cd /neuro
+rm -rf tmp
+mkdir tmp
+
+#Run the job
+cd /neuro/tmp
 hadoop jar /neuro/neurosrc/lib/NeuroHadoop.jar convolution.rchannel.ConvolutionJob /neuro/input /neuro/output/rats > /neuro/output.txt
 
 END=$(date +%s)
