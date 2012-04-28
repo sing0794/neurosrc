@@ -111,7 +111,7 @@ public class ConvolutionMapper extends MapReduceBase implements
 			alterout.newLine();			
 			insertout.append("INSERT OVERWRITE TABLE ratsaverage PARTITION (rat='" + ratnumber + "',dt='" + sessiondate + "',channel='" + channelid + "')");
 			insertout.newLine();			
-			insertout.append("SELECT time, frequency, convolution");
+			insertout.append("SELECT time, frequency, pow(convolution, 2)");
 			insertout.newLine();			
 			insertout.append("FROM rats");
 			insertout.newLine();			
@@ -131,7 +131,7 @@ public class ConvolutionMapper extends MapReduceBase implements
 			alterout.newLine();
 			insertout.append("INSERT OVERWRITE TABLE ratsaverage PARTITION (rat='" + ratnumber + "',dt='" + sessiondate + "', channel='avg')");
 			insertout.newLine();			
-			insertout.append("SELECT time, frequency, AVG(convolution)");
+			insertout.append("SELECT time, frequency, AVG(POW(convolution, 2))");
 			insertout.newLine();			
 			insertout.append("FROM rats");
 			insertout.newLine();			

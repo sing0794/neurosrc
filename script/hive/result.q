@@ -2,7 +2,7 @@
 	CREATE TABLE result 
 	LOCATION '/neuro/output/result' 
 	AS 
-	SELECT r.rat, r.dt, r.channel, r.frequency, p.phaserange, ROUND(AVG(r.convolution)) as convolution
+	SELECT r.rat, r.dt, r.channel, r.frequency, p.phaserange, ROUND(AVG(r.convolution)) AS convolution
 	FROM ratssubset r JOIN phasebuckets p ON r.time = p.time
 	GROUP BY r.rat, r.dt, r.channel, r.frequency, p.phaserange
 	;
