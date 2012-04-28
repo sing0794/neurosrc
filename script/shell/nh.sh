@@ -36,11 +36,6 @@ ant clean
 #Execute permissions
 chmod a+x /neuro/neurosrc/script/shell/*
 
-#Create tmp directory for job execution
-cd /neuro
-rm -rf tmp
-mkdir tmp
-
 #Run the job
 cd /neuro/tmp
 hadoop jar /neuro/neurosrc/lib/NeuroHadoop.jar convolution.rchannel.ConvolutionJob /neuro/input /neuro/output/rats > /neuro/output.txt
