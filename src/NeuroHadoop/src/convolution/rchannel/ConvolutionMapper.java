@@ -78,8 +78,8 @@ public class ConvolutionMapper extends MapReduceBase implements
 		String fpath = conf.get("map.input.file");
 		String fname = new File(fpath).getName();
 
-		BufferedWriter alterout = new BufferedWriter(new FileWriter("/neuro/neurosrc/script/hive/alterrats.q", true));		
-		BufferedWriter insertout = new BufferedWriter(new FileWriter("/neuro/neurosrc/script/hive/insertratsaverage.q", true));		
+		BufferedWriter alterout = new BufferedWriter(new FileWriter("/neuro/neurosrc/script/hive/alterrats.q"));		
+		BufferedWriter insertout = new BufferedWriter(new FileWriter("/neuro/neurosrc/script/hive/insertratsaverage.q"));		
 		
 		String ratnumber;
 		String sessiondate;
@@ -102,48 +102,48 @@ public class ConvolutionMapper extends MapReduceBase implements
 		indexEnd = fname.indexOf('.', indexBegin);
 		channelid = fname.substring(indexBegin, indexEnd);
 		
-		alterout.append("ALTER TABLE rats ADD PARTITION(rat='" + ratnumber + "',dt='" + sessiondate + "',channel='" + channelid + "');");
+		alterout.write("ALTER TABLE rats ADD PARTITION(rat='" + ratnumber + "',dt='" + sessiondate + "',channel='" + channelid + "');");
 		alterout.newLine();
 		if (channelid.contains("r")) {
 			alterout.newLine();			
-			alterout.append("ALTER TABLE ratsaverage ADD PARTITION(rat='" + ratnumber + "',dt='" + sessiondate + "',channel='" + channelid + "');");
+			alterout.write("ALTER TABLE ratsaverage ADD PARTITION(rat='" + ratnumber + "',dt='" + sessiondate + "',channel='" + channelid + "');");
 			alterout.newLine();			
 			alterout.newLine();			
-			insertout.append("INSERT OVERWRITE TABLE ratsaverage PARTITION (rat='" + ratnumber + "',dt='" + sessiondate + "',channel='" + channelid + "')");
+			insertout.write("INSERT OVERWRITE TABLE ratsaverage PARTITION (rat='" + ratnumber + "',dt='" + sessiondate + "',channel='" + channelid + "')");
 			insertout.newLine();			
-			insertout.append("SELECT time, frequency, pow(convolution, 2)");
+			insertout.write("SELECT time, frequency, pow(convolution, 2)");
 			insertout.newLine();			
-			insertout.append("FROM rats");
+			insertout.write("FROM rats");
 			insertout.newLine();			
-			insertout.append("WHERE rat='" + ratnumber + "'");
+			insertout.write("WHERE rat='" + ratnumber + "'");
 			insertout.newLine();			
-			insertout.append("AND dt='" + sessiondate + "'");
+			insertout.write("AND dt='" + sessiondate + "'");
 			insertout.newLine();			
-			insertout.append("AND channel='" + channelid + "'");
+			insertout.write("AND channel='" + channelid + "'");
 			insertout.newLine();			
-			insertout.append(";");
+			insertout.write(";");
 			insertout.newLine();			
 			insertout.newLine();			
 
 		} else if (channelid.contains("3")) {
 			alterout.newLine();
-			alterout.append("ALTER TABLE ratsaverage ADD PARTITION(rat='" + ratnumber + "',dt='" + sessiondate + "',channel='avg');");
+			alterout.write("ALTER TABLE ratsaverage ADD PARTITION(rat='" + ratnumber + "',dt='" + sessiondate + "',channel='avg');");
 			alterout.newLine();
-			insertout.append("INSERT OVERWRITE TABLE ratsaverage PARTITION (rat='" + ratnumber + "',dt='" + sessiondate + "', channel='avg')");
+			insertout.write("INSERT OVERWRITE TABLE ratsaverage PARTITION (rat='" + ratnumber + "',dt='" + sessiondate + "', channel='avg')");
 			insertout.newLine();			
-			insertout.append("SELECT time, frequency, AVG(POW(convolution, 2))");
+			insertout.write("SELECT time, frequency, AVG(POW(convolution, 2))");
 			insertout.newLine();			
-			insertout.append("FROM rats");
+			insertout.write("FROM rats");
 			insertout.newLine();			
-			insertout.append("WHERE rat='" + ratnumber + "'");
+			insertout.write("WHERE rat='" + ratnumber + "'");
 			insertout.newLine();			
-			insertout.append("AND dt='" + sessiondate + "'");
+			insertout.write("AND dt='" + sessiondate + "'");
 			insertout.newLine();			
-			insertout.append("AND NOT(channel LIKE '%r%')");
+			insertout.write("AND NOT(channel LIKE '%r%')");
 			insertout.newLine();			
-			insertout.append("GROUP BY time, frequency");
+			insertout.write("GROUP BY time, frequency");
 			insertout.newLine();			
-			insertout.append(";");
+			insertout.write(";");
 			insertout.newLine();	
 			insertout.newLine();	
 

@@ -49,44 +49,44 @@ echo "ConvolutionJob took $DIFF seconds"
 #Hive scripts
 #Ratsaverage
 START=$(date +%s)
-hive -f /neuro/neurosrc/script/hive/createrats.q
-hive -f /neuro/neurosrc/script/hive/alterrats.q
-hive -f /neuro/neurosrc/script/hive/insertratsaverage.q
+hive -S -f /neuro/neurosrc/script/hive/createrats.q
+hive -S -f /neuro/neurosrc/script/hive/alterrats.q
+hive -S -f /neuro/neurosrc/script/hive/insertratsaverage.q
 END=$(date +%s)
 DIFF=$(($END - $START))
 echo "Ratsaverage took $DIFF seconds"
 
 #Ratstats
 START=$(date +%s)
-hive -f /neuro/neurosrc/script/hive/ratstats.q
+hive -S -f /neuro/neurosrc/script/hive/ratstats.q
 END=$(date +%s)
 DIFF=$(($END - $START))
 echo "Ratstats took $DIFF seconds"
 
 #Passes
 START=$(date +%s)
-hive -f /neuro/neurosrc/script/hive/passesngc.q > /neuro/neurosrc/script/hive/ratssubset.q
+hive -S -f /neuro/neurosrc/script/hive/passesngc.q > /neuro/neurosrc/script/hive/ratssubset.q
 END=$(date +%s)
 DIFF=$(($END - $START))
 echo "Passes & script for ratssubset took $DIFF seconds"
 
 #Ratssubset
 START=$(date +%s)
-hive -f /neuro/neurosrc/script/hive/ratssubset.q
+hive -S -f /neuro/neurosrc/script/hive/ratssubset.q
 END=$(date +%s)
 DIFF=$(($END - $START))
 echo "Ratssubset took $DIFF seconds"
 
 #Phasebucket
 START=$(date +%s)
-hive --hiveconf maxphaserange=100 -f /neuro/neurosrc/script/hive/phasebucket.q
+hive -S --hiveconf maxphaserange=100 -f /neuro/neurosrc/script/hive/phasebucket.q
 END=$(date +%s)
 DIFF=$(($END - $START))
 echo "Phasebucket took $DIFF seconds"
 
 #Result
 START=$(date +%s)
-hive -f /neuro/neurosrc/script/hive/result.q
+hive -S -f /neuro/neurosrc/script/hive/result.q
 END=$(date +%s)
 DIFF=$(($END - $START))
 echo "Result took $DIFF seconds"
