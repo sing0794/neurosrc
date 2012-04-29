@@ -7,8 +7,6 @@ hadoop fs -rmr /neuro/input
 hadoop fs -rmr /neuro/lookup
 hadoop fs -rmr /neuro/hive
 rm /neuro/neurosrc/script/hive/createrats.q
-rm /neuro/neurosrc/script/hive/alterrats.q
-rm /neuro/neurosrc/script/hive/insertratsaverage.q
 
 #Hdfs folders
 hadoop fs -mkdir /neuro/input
@@ -35,14 +33,8 @@ ant
 cp /neuro/neurosrc/src/NeuroHive/dist/NeuroHive.jar /neuro/neurosrc/lib/NeuroHive.jar
 ant clean
 
-#Touch hive scripts
-touch /neuro/neurosrc/script/hive/createrats.q
-touch /neuro/neurosrc/script/hive/alterrats.q
-touch /neuro/neurosrc/script/hive/insertratsaverage.q
-
 #Execute permissions
 chmod a+x /neuro/neurosrc/script/shell/*
-chmod 777 /neuro/neurosrc/script/hive/*
 
 #Run the job
 cd /neuro/tmp
@@ -53,14 +45,20 @@ DIFF=$(($END - $START))
 echo "ConvolutionJob took $DIFF seconds"
 
 #Hive scripts
-#Ratsaverage
+#Ratsaverage dynamic
 START=$(date +%s)
 hive -S -f /neuro/neurosrc/script/hive/createrats.q
-hive -S -f /neuro/neurosrc/script/hive/alterrats.q
+hive -S -f /neuro/neurosrc/script/hive/dynamicrats.q > /neuro/neurosrc/script/hive/insertratsaverage.q
+END=$(date +%s)
+DIFF=$(($END - $START))
+echo "Script Ratsaverage took $DIFF seconds"
+
+#Ratsaverage
+START=$(date +%s)
 hive -S -f /neuro/neurosrc/script/hive/insertratsaverage.q
 END=$(date +%s)
 DIFF=$(($END - $START))
-echo "Ratsaverage took $DIFF seconds"
+echo "Insert Ratsaverage took $DIFF seconds"
 
 #Ratstats
 START=$(date +%s)

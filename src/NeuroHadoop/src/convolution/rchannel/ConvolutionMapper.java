@@ -67,93 +67,10 @@ public class ConvolutionMapper extends MapReduceBase implements
 					kernelStack[i] = ConvertStringArrayToShortArray(kernelMap.get(i).split(","));
 				}
 			}
-			AlterRatPartitions(conf);
 		} catch (IOException ioe) {
 			System.err.println("IOException reading from distributed cache");
 			System.err.println(ioe.toString());
 		}
-	}
-
-	public void AlterRatPartitions(JobConf conf) throws IOException {
-		String fpath = conf.get("map.input.file");
-		String fname = new File(fpath).getName();
-
-		BufferedWriter alterout = new BufferedWriter(new FileWriter("/neuro/neurosrc/script/hive/alterrats.q", true));		
-		BufferedWriter insertout = new BufferedWriter(new FileWriter("/neuro/neurosrc/script/hive/insertratsaverage.q", true));		
-		
-		String ratnumber;
-		String sessiondate;
-		String channelid;
-		
-		int indexBegin = 0;
-		int indexEnd = fname.indexOf('-');
-		
-		ratnumber = fname.substring(indexBegin, indexEnd);
-		indexBegin = indexEnd+1;
-		indexEnd = fname.indexOf('-', indexBegin);
-		sessiondate = fname.substring(indexBegin, indexEnd);
-		indexBegin = indexEnd+1;
-		indexEnd = fname.indexOf('-', indexBegin);
-		sessiondate = sessiondate + '-' + fname.substring(indexBegin, indexEnd);
-		indexBegin = indexEnd+1;
-		indexEnd = fname.indexOf('-', indexBegin);
-		sessiondate = sessiondate + '-' + fname.substring(indexBegin, indexEnd);
-		indexBegin = indexEnd+4;
-		indexEnd = fname.indexOf('.', indexBegin);
-		channelid = fname.substring(indexBegin, indexEnd);
-		
-		alterout.append("ALTER TABLE rats ADD PARTITION(rat='" + ratnumber + "',dt='" + sessiondate + "',channel='" + channelid + "');");
-		alterout.newLine();
-		if (channelid.contains("r")) {
-			alterout.newLine();			
-			alterout.append("ALTER TABLE ratsaverage ADD PARTITION(rat='" + ratnumber + "',dt='" + sessiondate + "',channel='" + channelid + "');");
-			alterout.newLine();			
-			alterout.newLine();			
-			insertout.append("INSERT OVERWRITE TABLE ratsaverage PARTITION (rat='" + ratnumber + "',dt='" + sessiondate + "',channel='" + channelid + "')");
-			insertout.newLine();			
-			insertout.append("SELECT time, frequency, pow(convolution, 2)");
-			insertout.newLine();			
-			insertout.append("FROM rats");
-			insertout.newLine();			
-			insertout.append("WHERE rat='" + ratnumber + "'");
-			insertout.newLine();			
-			insertout.append("AND dt='" + sessiondate + "'");
-			insertout.newLine();			
-			insertout.append("AND channel='" + channelid + "'");
-			insertout.newLine();			
-			insertout.append(";");
-			insertout.newLine();			
-			insertout.newLine();			
-
-		} else if (channelid.contains("3")) {
-			alterout.newLine();
-			alterout.append("ALTER TABLE ratsaverage ADD PARTITION(rat='" + ratnumber + "',dt='" + sessiondate + "',channel='avg');");
-			alterout.newLine();
-			insertout.append("INSERT OVERWRITE TABLE ratsaverage PARTITION (rat='" + ratnumber + "',dt='" + sessiondate + "', channel='avg')");
-			insertout.newLine();			
-			insertout.append("SELECT time, frequency, AVG(POW(convolution, 2))");
-			insertout.newLine();			
-			insertout.append("FROM rats");
-			insertout.newLine();			
-			insertout.append("WHERE rat='" + ratnumber + "'");
-			insertout.newLine();			
-			insertout.append("AND dt='" + sessiondate + "'");
-			insertout.newLine();			
-			insertout.append("AND NOT(channel LIKE '%r%')");
-			insertout.newLine();			
-			insertout.append("GROUP BY time, frequency");
-			insertout.newLine();			
-			insertout.append(";");
-			insertout.newLine();	
-			insertout.newLine();	
-
-		}
-		
-		alterout.flush();
-		alterout.close();
-		insertout.flush();
-		insertout.close();
-
 	}
 
 	public void loadKernel(Path cachePath) throws IOException {
