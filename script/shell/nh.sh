@@ -42,7 +42,7 @@ touch /neuro/neurosrc/script/hive/insertratsaverage.q
 
 #Execute permissions
 chmod a+x /neuro/neurosrc/script/shell/*
-chmod a+x /neuro/neurosrc/script/hive/*
+chmod 777 /neuro/neurosrc/script/hive/*
 
 #Run the job
 cd /neuro/tmp
