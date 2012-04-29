@@ -35,6 +35,11 @@ ant
 cp /neuro/neurosrc/src/NeuroHive/dist/NeuroHive.jar /neuro/neurosrc/lib/NeuroHive.jar
 ant clean
 
+#Touch hive scripts
+touch /neuro/neurosrc/script/hive/createrats.q
+touch /neuro/neurosrc/script/hive/alterrats.q
+touch /neuro/neurosrc/script/hive/insertratsaverage.q
+
 #Execute permissions
 chmod a+x /neuro/neurosrc/script/shell/*
 
