@@ -5,6 +5,7 @@ START=$(date +%s)
 hadoop fs -rmr /neuro/output
 hadoop fs -rmr /neuro/input
 hadoop fs -rmr /neuro/lookup
+hadoop fs -rmr /neuro/hive
 rm /neuro/neurosrc/script/hive/createrats.q
 rm /neuro/neurosrc/script/hive/alterrats.q
 rm /neuro/neurosrc/script/hive/insertratsaverage.q
@@ -12,6 +13,7 @@ rm /neuro/neurosrc/script/hive/insertratsaverage.q
 #Hdfs folders
 hadoop fs -mkdir /neuro/input
 hadoop fs -mkdir /neuro/lookup
+hadoop fs -mkdir /neuro/hive
 hadoop fs -mkdir /neuro/output/passes
 hadoop fs -mkdir /neuro/output/phase
 
