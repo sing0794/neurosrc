@@ -81,3 +81,10 @@ hive --hiveconf maxphaserange=100 -f /neuro/neurosrc/script/hive/phasebucket.q
 END=$(date +%s)
 DIFF=$(($END - $START))
 echo "Phasebucket took $DIFF seconds"
+
+#Result
+START=$(date +%s)
+hive -f /neuro/neurosrc/script/hive/result.q
+END=$(date +%s)
+DIFF=$(($END - $START))
+echo "Result took $DIFF seconds"
