@@ -78,8 +78,8 @@ public class ConvolutionMapper extends MapReduceBase implements
 		String fpath = conf.get("map.input.file");
 		String fname = new File(fpath).getName();
 
-		BufferedWriter alterout = new BufferedWriter(new FileWriter("/neuro/neurosrc/script/hive/alterrats.q"));		
-		BufferedWriter insertout = new BufferedWriter(new FileWriter("/neuro/neurosrc/script/hive/insertratsaverage.q"));		
+		BufferedWriter alterout = new BufferedWriter(new FileWriter("/neuro/neurosrc/script/hive/alterrats.q", true));		
+		BufferedWriter insertout = new BufferedWriter(new FileWriter("/neuro/neurosrc/script/hive/insertratsaverage.q", true));		
 		
 		String ratnumber;
 		String sessiondate;
