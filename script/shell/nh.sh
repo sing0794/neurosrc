@@ -50,6 +50,13 @@ DIFF=$(($END - $START))
 echo "ConvolutionJob took $DIFF seconds"
 
 #Hive scripts
+#Session Information
+START=$(date +%s)
+hive -S -f /neuro/neurosrc/script/hive/session.q
+END=$(date +%s)
+DIFF=$(($END - $START))
+echo "Script Session took $DIFF seconds"
+
 #Rats 
 START=$(date +%s)
 hive -S -f /neuro/neurosrc/script/hive/createrats.q
