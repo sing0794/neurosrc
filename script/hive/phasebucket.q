@@ -8,7 +8,7 @@ ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
 LOCATION '/neuro/output/phase';
 
 DROP TABLE phasebuckets;
-CREATE TABLE phasebuckets
+CREATE TABLE phasebuckets(time INT, phaserange INT)
 LOCATION '/neuro/output/phasebuckets' 
 AS 
 SELECT time, FLOOR(((CAST(TRIM(phase) AS INT)  - ${hiveconf:minphase}) / (${hiveconf:maxphase} - ${hiveconf:minphase})) * ${hiveconf:maxphaserange}) + 1 AS phaserange

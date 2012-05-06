@@ -81,7 +81,7 @@ public class ConvolutionJob extends Configured implements Tool {
 		out.write("DROP TABLE ratsaverage;");
 		out.newLine();
 		out.newLine();
-		out.write("CREATE EXTERNAL TABLE rats(time INT, frequency INT, convolution INT)");
+		out.write("CREATE EXTERNAL TABLE rats(time INT, frequency INT, convolution FLOAT)");
 		out.newLine();
 		out.write("PARTITIONED BY(rat STRING, dt STRING, channel STRING)");
 		out.newLine();
@@ -90,7 +90,7 @@ public class ConvolutionJob extends Configured implements Tool {
 		out.write("STORED AS SEQUENCEFILE LOCATION '/neuro/output/rats';");
 		out.newLine();
 		out.newLine();
-		out.write("CREATE TABLE ratsaverage(time INT, frequency INT, convolution INT)");
+		out.write("CREATE TABLE ratsaverage(time INT, frequency INT, convolution FLOAT)");
 		out.newLine();
 		out.write("PARTITIONED BY(rat STRING, dt STRING, channel STRING)");
 		out.newLine();

@@ -1,5 +1,6 @@
 #!/bin/bash
 START=$(date +%s)
+NUM_BUCKETS=75
 
 #Clean hdfs
 hadoop fs -rmr /neuro/output
@@ -21,6 +22,12 @@ hadoop fs -put /neuro/data/signals/*.csv /neuro/input/
 hadoop fs -put /neuro/data/passes/*.csv /neuro/output/passes/
 hadoop fs -put /neuro/data/phase/*.csv /neuro/output/phase/
 
+#Build Neuro Hadoop Settings jar
+cd /neuro/neurosrc/src/NeuroSettings
+ant
+cp /neuro/neurosrc/src/NeuroSettings/dist/NeuroSettings.jar /neuro/neurosrc/lib/NeuroSettings.jar
+ant clean
+
 #Build Neuro Hadoop jar
 cd /neuro/neurosrc/src/NeuroHadoop
 ant
@@ -33,22 +40,28 @@ ant
 cp /neuro/neurosrc/src/NeuroHive/dist/NeuroHive.jar /neuro/neurosrc/lib/NeuroHive.jar
 ant clean
 
-#Execute permissions
-chmod a+x /neuro/neurosrc/script/shell/*
-
 #Run the job
 cd /neuro/tmp
-hadoop jar /neuro/neurosrc/lib/NeuroHadoop.jar convolution.rchannel.ConvolutionJob /neuro/input /neuro/output/rats > /neuro/output.txt
+hadoop jar /neuro/neurosrc/lib/NeuroSettings.jar convolution.rchannel.SettingsJob /neuro/input /neuro/hive/session > /neuro/tmp/session.txt
+hadoop jar /neuro/neurosrc/lib/NeuroHadoop.jar convolution.rchannel.ConvolutionJob /neuro/input /neuro/output/rats > /neuro/tmp/output.txt
 
 END=$(date +%s)
 DIFF=$(($END - $START))
 echo "ConvolutionJob took $DIFF seconds"
 
 #Hive scripts
-#Ratsaverage dynamic
+#Rats 
 START=$(date +%s)
 hive -S -f /neuro/neurosrc/script/hive/createrats.q
-hive -S -f /neuro/neurosrc/script/hive/dynamicrats.q > /neuro/neurosrc/script/hive/insertratsaverage.q
+hive -S -f /neuro/neurosrc/script/hive/preparealterrats.q > /neuro/neurosrc/script/hive/alterrats.q
+hive -S -f /neuro/neurosrc/script/hive/alterrats.q
+END=$(date +%s)
+DIFF=$(($END - $START))
+echo "Script Rats took $DIFF seconds"
+
+#Ratsaverage dynamic
+START=$(date +%s)
+hive -S -f /neuro/neurosrc/script/hive/prepareratsaverage.q > /neuro/neurosrc/script/hive/insertratsaverage.q
 END=$(date +%s)
 DIFF=$(($END - $START))
 echo "Script Ratsaverage took $DIFF seconds"
@@ -83,7 +96,7 @@ echo "Ratssubset took $DIFF seconds"
 
 #Phasebucket
 START=$(date +%s)
-hive -S --hiveconf maxphaserange=100 -f /neuro/neurosrc/script/hive/phasebucket.q
+hive -S --hiveconf maxphaserange=$NUM_BUCKETS -f /neuro/neurosrc/script/hive/phasebucket.q
 END=$(date +%s)
 DIFF=$(($END - $START))
 echo "Phasebucket took $DIFF seconds"

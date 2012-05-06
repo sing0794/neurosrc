@@ -1,5 +1,5 @@
 	DROP TABLE result;
-	CREATE TABLE result 
+	CREATE TABLE result(rat STRING, dt STRING, channel STRING, frequency INT, phaserange INT, convolution FLOAT)
 	LOCATION '/neuro/output/result' 
 	AS 
 	SELECT r.rat, r.dt, r.channel, r.frequency, p.phaserange, AVG(r.convolution) AS convolution

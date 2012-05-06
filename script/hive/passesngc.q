@@ -15,7 +15,7 @@ create temporary function ngc as 'convolution.hive.udaf.NGroupConcat';
 SELECT concat(
 	"
 	DROP TABLE ratssubset\;
-	CREATE TABLE ratssubset 
+	CREATE TABLE ratssubset(rat STRING, dt STRING, channel STRING, frequency INT, convolution FLOAT)
 	LOCATION '/neuro/output/ratssubset' 
 	AS 
 	SELECT r.rat, r.dt, r.channel, r.time, r.frequency, (r.convolution-s.mean) / s.sd AS convolution
