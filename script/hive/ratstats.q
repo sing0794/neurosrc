@@ -1,5 +1,5 @@
 	DROP TABLE ratstats;
-	CREATE TABLE ratstats(rat STRING, dt STRING, channel STRING, mean FLOAT, sd FLOAT)
+	CREATE TABLE ratstats(rat STRING, dt STRING, channel STRING, frequency INT, mean FLOAT, sd FLOAT)
 	LOCATION '/neuro/output/ratstats'
 	;
 
