@@ -17,7 +17,8 @@ SELECT concat(
 	DROP TABLE ratssubset\;
 	CREATE TABLE ratssubset(rat STRING, dt STRING, channel STRING, frequency INT, convolution FLOAT)
 	LOCATION '/neuro/output/ratssubset' 
-	AS 
+	;
+	INSERT OVERWRITE TABLE ratssubset
 	SELECT r.rat, r.dt, r.channel, r.time, r.frequency, (r.convolution-s.mean) / s.sd AS convolution
 	FROM ratsaverage r JOIN ratstats s ON (
 		r.rat = s.rat AND
@@ -25,6 +26,7 @@ SELECT concat(
 		r.channel = s.channel AND
 		r.frequency = s.frequency
 	)
-	WHERE ", ngc(concat("((r.time >= ", mintime, ") AND (r.time <= ", maxtime, ")) OR ")), "FALSE\;"
+	WHERE ", ngc(concat("((r.time >= ", mintime, ") AND (r.time <= ", maxtime, ")) OR ")), "FALSE
+	\;"
 	)
 FROM passes;
