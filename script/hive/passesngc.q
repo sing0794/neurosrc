@@ -14,7 +14,7 @@ create temporary function ngc as 'convolution.hive.udaf.NGroupConcat';
 -- Use ngc to generate create script for table rat subset
 SELECT concat(
 	"DROP TABLE ratssubset\;
-	CREATE TABLE ratssubset(rat STRING, dt STRING, channel STRING, frequency INT, convolution FLOAT)
+	CREATE TABLE ratssubset(rat STRING, dt STRING, channel STRING, time INT, frequency INT, convolution FLOAT)
 	LOCATION '/neuro/output/ratssubset' 
 	\;
 	INSERT OVERWRITE TABLE ratssubset
